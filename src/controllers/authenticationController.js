@@ -1,6 +1,7 @@
 import connection from "../database/db.js";
 import bcrypt from "bcrypt";
 import dayjs from "dayjs";
+import jwt from "jsonwebtoken";
 
 export async function insertUser(req, res) {
   const { name, email, password } = req.body;
@@ -16,4 +17,13 @@ export async function insertUser(req, res) {
   );
 
   res.sendStatus(201);
+}
+
+export function sendJwt(req, res) {
+  const username = req.username;
+  res
+    .status(200)
+    .send(
+      jwt.sign({ name: username }, process.env.SECRET_JWT, { expiresIn: 3600 })
+    );
 }

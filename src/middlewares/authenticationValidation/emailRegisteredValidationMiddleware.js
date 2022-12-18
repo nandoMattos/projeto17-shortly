@@ -6,7 +6,7 @@ export default async function emailRegisteredValidationMiddleware(
   next
 ) {
   try {
-    const emailInUse = await connection.query(
+    const isEmailInUse = await connection.query(
       `
       SELECT id
       FROM users
@@ -15,7 +15,7 @@ export default async function emailRegisteredValidationMiddleware(
       [req.body.email]
     );
 
-    if (emailInUse.rows[0]) {
+    if (isEmailInUse.rows[0]) {
       res.status(409).send("Email já cadastrado.");
       return;
     }
