@@ -6,7 +6,7 @@ export default async function validateCredentialsMiddleware(req, res, next) {
   try {
     const { rows } = await connection.query(
       `
-      SELECT password, name
+      SELECT password, name, id
       FROM users
       WHERE email = $1;
     `,
@@ -21,6 +21,7 @@ export default async function validateCredentialsMiddleware(req, res, next) {
     }
 
     req.username = rows[0].name;
+    req.id = rows[0].id;
   } catch (err) {
     console.log(err);
     res.sendStatus(500);

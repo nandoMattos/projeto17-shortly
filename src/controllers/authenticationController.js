@@ -21,9 +21,10 @@ export async function insertUser(req, res) {
 
 export function sendJwt(req, res) {
   const username = req.username;
+  const id = req.id;
   res
     .status(200)
     .send(
-      jwt.sign({ name: username }, process.env.SECRET_JWT, { expiresIn: 3600 })
+      jwt.sign({ id, username }, process.env.SECRET_JWT, { expiresIn: 3600 })
     );
 }
