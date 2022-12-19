@@ -23,3 +23,26 @@ export async function shortenUrl(req, res) {
     res.sendStatus(500);
   }
 }
+
+export async function getUrl(req, res) {
+  const requestedUrl = res.locals.shortenUrl;
+
+  res.status(200).send(requestedUrl);
+}
+
+export async function deleteUrl(req, res) {
+  try {
+    await connection.query(
+      `
+      DELETE FROM shorten_urls
+      WHERE id = $1;
+    `,
+      [req.params.id]
+    );
+
+    res.sendStatus(204);
+  } catch (err) {
+    console.log(err);
+    res.sendStatus(500);
+  }
+}
