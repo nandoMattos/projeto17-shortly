@@ -15,7 +15,7 @@ export async function getUserInfo(req, res) {
       `
       SELECT id, "originalUrl", "shortenUrl", "visitCount"
       FROM urls
-      WHERE "userId" = $1
+      WHERE "userId" = $1;
     `,
       [res.locals.userId]
     );
