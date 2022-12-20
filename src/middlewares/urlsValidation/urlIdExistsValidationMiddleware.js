@@ -4,7 +4,7 @@ export default async function urlIdExistsValidationMiddleware(req, res, next) {
   try {
     const urlIdExists = await connection.query(
       `
-      SELECT shorten_url
+      SELECT id, shorten_url, original_url
       FROM shorten_urls
       WHERE id = $1
     `,
@@ -16,7 +16,7 @@ export default async function urlIdExistsValidationMiddleware(req, res, next) {
       return;
     }
 
-    res.locals.shortenUrl = urlIdExists.rows[0].shorten_url;
+    res.locals.urlInfo = urlIdExists.rows[0];
   } catch (err) {
     console.log(err);
     res.sendStatus(500);

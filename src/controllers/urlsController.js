@@ -25,9 +25,9 @@ export async function shortenUrl(req, res) {
 }
 
 export async function getUrl(req, res) {
-  const requestedUrl = res.locals.shortenUrl;
+  const { id, shorten_url: shortUrl, original_url: url } = res.locals.urlInfo;
 
-  res.status(200).send(requestedUrl);
+  res.status(200).send({ id, shortUrl, url });
 }
 
 export async function deleteUrl(req, res) {
