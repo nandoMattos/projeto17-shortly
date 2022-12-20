@@ -11,7 +11,7 @@ export default async function urlBelongsToUserValidationMiddleware(
     const URL = await connection.query(
       `
       SELECT "userId"
-      FROM shorten_urls
+      FROM urls
       WHERE id = $1;
     `,
       [req.params.id]
@@ -21,10 +21,9 @@ export default async function urlBelongsToUserValidationMiddleware(
       res.sendStatus(401);
       return;
     }
+    next();
   } catch (err) {
     console.log(err);
     res.sendStatus(500);
   }
-
-  next();
 }

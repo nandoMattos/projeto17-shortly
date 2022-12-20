@@ -21,10 +21,9 @@ export default async function validateCredentialsMiddleware(req, res, next) {
     }
 
     res.locals.userInfo = rows[0];
+    next();
   } catch (err) {
     console.log(err);
     res.sendStatus(500);
   }
-
-  next();
 }

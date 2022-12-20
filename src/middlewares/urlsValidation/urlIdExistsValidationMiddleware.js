@@ -17,9 +17,9 @@ export default async function urlIdExistsValidationMiddleware(req, res, next) {
     }
 
     res.locals.urlInfo = urlIdExists.rows[0];
+    next();
   } catch (err) {
     console.log(err);
     res.sendStatus(500);
   }
-  next();
 }

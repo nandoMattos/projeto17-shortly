@@ -22,7 +22,7 @@ export default function tokenValidationMiddleware(req, res, next) {
     );
 
     if (!userExists.rows[0]) {
-      res.status(401).send("Token inválido.");
+      res.status(404).send("Usuário não encontrado.");
       return;
     }
 
@@ -31,11 +31,12 @@ export default function tokenValidationMiddleware(req, res, next) {
 
     // very specific case, where user is deleted and someone inserts manually his old id
     if (username !== registeredUsername || email !== registeredEmail) {
-      res.status(401).send("Token inválido.");
+      res.status(404).send("Usuário não encontrado.");
       return;
     }
 
     res.locals.userId = userId;
+    res.locals.userName = registeredUsername;
     next();
   });
 }

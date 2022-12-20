@@ -22,9 +22,9 @@ export default async function shortUrlExistsValidationMiddleware(
 
     res.locals.originalUrl = shorUrlExists.rows[0].originalUrl;
     res.locals.urlId = shorUrlExists.rows[0].id;
+    next();
   } catch (err) {
     console.log(err);
     res.sendStatus(500);
   }
-  next();
 }

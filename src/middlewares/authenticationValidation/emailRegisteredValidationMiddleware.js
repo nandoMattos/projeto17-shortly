@@ -19,9 +19,9 @@ export default async function emailRegisteredValidationMiddleware(
       res.status(409).send("Email já cadastrado.");
       return;
     }
+    next();
   } catch (err) {
     console.log(err);
     res.sendStatus(500);
   }
-  next();
 }

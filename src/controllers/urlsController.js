@@ -34,7 +34,7 @@ export async function deleteUrl(req, res) {
   try {
     await connection.query(
       `
-      DELETE FROM shorten_urls
+      DELETE FROM urls
       WHERE id = $1;
     `,
       [req.params.id]
