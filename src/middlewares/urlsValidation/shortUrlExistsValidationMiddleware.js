@@ -6,16 +6,25 @@ export default async function shortUrlExistsValidationMiddleware(
   next
 ) {
   try {
-    const shorUrlExists = connection.query(
+    const shorUrlExists = await connection.query(
       `
-      SELECT original_url
-      FROM shorten_urls
-      WHERE shorten_url;
+      SELECT id, "originalUrl"
+      FROM urls
+      WHERE "shortenUrl" = $1;
     `,
-      [req.params]
+      [req.params.shortUrl]
     );
+
+    if (!shorUrlExists.rows[0]) {
+      res.status(404).send("URL não encontrada.");
+      return;
+    }
+
+    res.locals.originalUrl = shorUrlExists.rows[0].originalUrl;
+    res.locals.urlId = shorUrlExists.rows[0].id;
   } catch (err) {
     console.log(err);
     res.sendStatus(500);
   }
+  next();
 }

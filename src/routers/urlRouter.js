@@ -2,6 +2,7 @@ import { Router } from "express";
 import {
   deleteUrl,
   getUrl,
+  redirectToUrl,
   shortenUrl,
 } from "../controllers/urlsController.js";
 import tokenValidationMiddleware from "../middlewares/authenticationValidation/tokenValidationMiddleware.js";
@@ -21,7 +22,11 @@ router.post(
 
 router.get("/urls/:id", urlIdExistsValidationMiddleware, getUrl);
 
-router.get("/urls/open/:shortUrl", shortUrlExistsValidationMiddleware);
+router.get(
+  "/urls/open/:shortUrl",
+  shortUrlExistsValidationMiddleware,
+  redirectToUrl
+);
 
 router.delete(
   "/urls/:id",

@@ -25,7 +25,7 @@ export async function shortenUrl(req, res) {
 }
 
 export async function getUrl(req, res) {
-  const { id, shorten_url: shortUrl, original_url: url } = res.locals.urlInfo;
+  const { id, shortenUrl: shortUrl, originalUrl: url } = res.locals.urlInfo;
 
   res.status(200).send({ id, shortUrl, url });
 }
@@ -45,4 +45,16 @@ export async function deleteUrl(req, res) {
     console.log(err);
     res.sendStatus(500);
   }
+}
+
+export async function redirectToUrl(req, res) {
+  await connection.query(
+    `
+    UPDATE urls
+    SET "visitCount" = "visitCount" + 1
+    WHERE id = $1;
+  `,
+    [res.locals.urlId]
+  );
+  res.redirect(200, res.locals.originalUrl);
 }

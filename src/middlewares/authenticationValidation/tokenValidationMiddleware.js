@@ -26,10 +26,10 @@ export default function tokenValidationMiddleware(req, res, next) {
       return;
     }
 
-    // very specific case, where user is deleted and someone inserts manually his old id
     const { name: registeredUsername, email: registeredEmail } =
       userExists?.rows[0];
 
+    // very specific case, where user is deleted and someone inserts manually his old id
     if (username !== registeredUsername || email !== registeredEmail) {
       res.status(401).send("Token inválido.");
       return;

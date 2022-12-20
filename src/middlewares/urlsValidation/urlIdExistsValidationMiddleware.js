@@ -4,8 +4,8 @@ export default async function urlIdExistsValidationMiddleware(req, res, next) {
   try {
     const urlIdExists = await connection.query(
       `
-      SELECT id, shorten_url, original_url
-      FROM shorten_urls
+      SELECT id, "shortenUrl", "originalUrl"
+      FROM urls
       WHERE id = $1
     `,
       [req.params.id]
