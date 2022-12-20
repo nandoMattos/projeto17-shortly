@@ -20,11 +20,11 @@ export async function insertUser(req, res) {
 }
 
 export function sendJwt(req, res) {
-  const username = req.username;
-  const id = req.id;
-  res
-    .status(200)
-    .send(
-      jwt.sign({ id, username }, process.env.SECRET_JWT, { expiresIn: 3600 })
-    );
+  const { id, name, email } = res.locals.userInfo;
+
+  res.status(200).send(
+    jwt.sign({ id, username: name, email }, process.env.SECRET_JWT, {
+      expiresIn: 3600,
+    })
+  );
 }
