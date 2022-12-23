@@ -42,7 +42,7 @@ export async function deleteUrl(req, res) {
 export async function redirectToUrl(req, res) {
   try {
     await urlRepository.incrementVisitCount(res.locals.urlId);
-    res.redirect(200, res.locals.originalUrl);
+    res.redirect(res.locals.originalUrl);
   } catch (err) {
     console.log(err);
     res.sendStatus(500);
