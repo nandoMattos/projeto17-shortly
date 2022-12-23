@@ -6,7 +6,7 @@ async function getRanking() {
     FROM users u
     LEFT JOIN urls ur ON ur."userId" = u.id
     GROUP BY u.id
-    ORDER BY "visitCount" DESC
+    ORDER BY "visitCount" DESC, "linksCount" DESC
     LIMIT 10;
   `);
 }
