@@ -1,5 +1,49 @@
 import connection from "../database/db.js";
 
+function getShortenUrl(shortenUrl) {
+  return connection.query(
+    `
+    SELECT id, "shortenUrl"
+    FROM urls
+    WHERE "originalUrl" = $1;
+  `,
+    [shortenUrl]
+  );
+}
+
+function urlExists(url) {
+  return connection.query(
+    `
+    SELECT id
+    FROM urls
+    WHERE "originalUrl" = $1;
+  `,
+    [url]
+  );
+}
+
+function getUrls(urlId) {
+  return connection.query(
+    `
+    SELECT id, "shortenUrl", "originalUrl"
+    FROM urls
+    WHERE id = $1
+  `,
+    [urlId]
+  );
+}
+
+function getUserId(urlId) {
+  return connection.query(
+    `
+    SELECT "userId"
+    FROM urls
+    WHERE id = $1;
+  `,
+    [urlId]
+  );
+}
+
 function shortenUrl(userId, originalUrl, shortenUrl, createdAt) {
   return connection.query(
     `
@@ -33,6 +77,14 @@ function incrementVisitCount(urlId) {
   );
 }
 
-const urlRepository = { shortenUrl, deleteUrl, incrementVisitCount };
+const urlRepository = {
+  getShortenUrl,
+  urlExists,
+  getUrls,
+  getUserId,
+  shortenUrl,
+  deleteUrl,
+  incrementVisitCount,
+};
 
 export default urlRepository;

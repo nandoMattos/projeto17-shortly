@@ -1,4 +1,4 @@
-import connection from "../../database/db.js";
+import urlRepository from "../../repositories/urlRepository.js";
 
 export default async function urlBelongsToUserValidationMiddleware(
   req,
@@ -8,14 +8,7 @@ export default async function urlBelongsToUserValidationMiddleware(
   const userId = res.locals.userId;
 
   try {
-    const URL = await connection.query(
-      `
-      SELECT "userId"
-      FROM urls
-      WHERE id = $1;
-    `,
-      [req.params.id]
-    );
+    const URL = await urlRepository.getUserId(req.params.id);
 
     if (userId != URL.rows[0].userId) {
       res.sendStatus(401);

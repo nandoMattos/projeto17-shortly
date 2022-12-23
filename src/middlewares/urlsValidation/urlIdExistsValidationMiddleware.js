@@ -1,15 +1,8 @@
-import connection from "../../database/db.js";
+import urlRepository from "../../repositories/urlRepository.js";
 
 export default async function urlIdExistsValidationMiddleware(req, res, next) {
   try {
-    const urlIdExists = await connection.query(
-      `
-      SELECT id, "shortenUrl", "originalUrl"
-      FROM urls
-      WHERE id = $1
-    `,
-      [req.params.id]
-    );
+    const urlIdExists = await urlRepository.getUrls(req.params.id);
 
     if (!urlIdExists.rows[0]) {
       res.status(404).send("URL não encontrada.");

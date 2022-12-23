@@ -1,4 +1,4 @@
-import connection from "../../database/db.js";
+import userRepository from "../../repositories/userRepository.js";
 
 export default async function emailRegisteredValidationMiddleware(
   req,
@@ -6,14 +6,7 @@ export default async function emailRegisteredValidationMiddleware(
   next
 ) {
   try {
-    const isEmailInUse = await connection.query(
-      `
-      SELECT id
-      FROM users
-      WHERE email = $1;
-    `,
-      [req.body.email]
-    );
+    const isEmailInUse = await userRepository.emailAlreadyInUse(req.body.email);
 
     if (isEmailInUse.rows[0]) {
       res.status(409).send("Email já cadastrado.");

@@ -1,4 +1,4 @@
-import connection from "../../database/db.js";
+import urlRepository from "../../repositories/urlRepository.js";
 
 export default async function shortUrlExistsValidationMiddleware(
   req,
@@ -6,22 +6,17 @@ export default async function shortUrlExistsValidationMiddleware(
   next
 ) {
   try {
-    const shorUrlExists = await connection.query(
-      `
-      SELECT id, "originalUrl"
-      FROM urls
-      WHERE "shortenUrl" = $1;
-    `,
-      [req.params.shortUrl]
+    const shortenUrlExists = await urlRepository.getOriginalUrl(
+      req.params.shortUrl
     );
 
-    if (!shorUrlExists.rows[0]) {
+    if (!shortenUrlExists.rows[0]) {
       res.status(404).send("URL não encontrada.");
       return;
     }
 
-    res.locals.originalUrl = shorUrlExists.rows[0].originalUrl;
-    res.locals.urlId = shorUrlExists.rows[0].id;
+    res.locals.originalUrl = shortenUrlExists.rows[0].originalUrl;
+    res.locals.urlId = shortenUrlExists.rows[0].id;
     next();
   } catch (err) {
     console.log(err);

@@ -1,17 +1,10 @@
-import connection from "../../database/db.js";
 import bcrypt from "bcrypt";
+import userRepository from "../../repositories/userRepository.js";
 
 export default async function validateCredentialsMiddleware(req, res, next) {
   const { password } = req.body;
   try {
-    const { rows } = await connection.query(
-      `
-      SELECT password, name, id, email
-      FROM users
-      WHERE email = $1;
-    `,
-      [req.body.email]
-    );
+    const { rows } = await userRepository.getUserInfo(req.body.email);
 
     const userPassword = rows[0]?.password;
 

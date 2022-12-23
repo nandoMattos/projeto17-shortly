@@ -1,5 +1,5 @@
 import jwt, { decode } from "jsonwebtoken";
-import connection from "../../database/db.js";
+import userRepository from "../../repositories/userRepository.js";
 
 export default function tokenValidationMiddleware(req, res, next) {
   const { authorization } = req.headers;
@@ -12,14 +12,7 @@ export default function tokenValidationMiddleware(req, res, next) {
     }
     const { id: userId, username, email } = decode;
 
-    const userExists = await connection.query(
-      `
-      SELECT name, email
-      FROM users
-      WHERE id = $1;
-    `,
-      [userId]
-    );
+    const userExists = await userRepository.userIdExists(userId);
 
     if (!userExists.rows[0]) {
       res.status(404).send("Usuário não encontrado.");
