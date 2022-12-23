@@ -3,9 +3,9 @@ import connection from "../database/db.js";
 function getShortenUrl(shortenUrl) {
   return connection.query(
     `
-    SELECT id, "shortenUrl"
+    SELECT id, "originalUrl"
     FROM urls
-    WHERE "originalUrl" = $1;
+    WHERE "shortenUrl" = $1;
   `,
     [shortenUrl]
   );

@@ -6,7 +6,7 @@ export default async function shortUrlExistsValidationMiddleware(
   next
 ) {
   try {
-    const shortenUrlExists = await urlRepository.getOriginalUrl(
+    const shortenUrlExists = await urlRepository.getShortenUrl(
       req.params.shortUrl
     );
 
