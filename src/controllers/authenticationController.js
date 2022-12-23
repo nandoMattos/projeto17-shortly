@@ -1,20 +1,15 @@
-import connection from "../database/db.js";
-import bcrypt from "bcrypt";
-import dayjs from "dayjs";
 import jwt from "jsonwebtoken";
+import authenticationRepository from "../repositories/authenticationRepository.js";
 
 export async function insertUser(req, res) {
   const { name, email, password } = req.body;
 
-  await connection.query(
-    `
-    INSERT INTO users
-    (name, email, password, "createdAt")
-    VALUES
-    ($1, $2, $3, $4);
-  `,
-    [name, email, bcrypt.hashSync(password, 10), dayjs()]
-  );
+  try {
+    await authenticationRepository.insertUser(name, email, password);
+  } catch (err) {
+    console.log(err);
+    res.sendStatus(500);
+  }
 
   res.sendStatus(201);
 }
